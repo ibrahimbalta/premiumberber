@@ -505,37 +505,7 @@
             saveDB();
         }
 
-        // ---- About ----
-        document.getElementById('aboutTitle').value = db.about.title;
-        document.getElementById('aboutText').value = db.about.text;
-        document.getElementById('currentAboutImg').src = db.about.image || 'assets/images/service-beard.png';
-
-        document.getElementById('aboutForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const fileInput = document.getElementById('aboutFileInput');
-
-            const updateData = () => {
-                db.about.title = document.getElementById('aboutTitle').value;
-                db.about.text = document.getElementById('aboutText').value;
-                saveDB();
-                document.getElementById('currentAboutImg').src = db.about.image;
-            };
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    if (event.target.result.length > 1500000) {
-                        alert('Resim boyutu çok büyük! Daha küçük bir dosya seçin.');
-                        return;
-                    }
-                    db.about.image = event.target.result;
-                    updateData();
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                updateData();
-            }
-        });
+        // ---- About (Moved to initDashboard) ----
 
         // ---- Gallery ----
         function renderGallery() {
@@ -588,22 +558,7 @@
             saveDB();
         }
 
-        // ---- Contact ----
-        document.getElementById('contactPhone').value = db.contact.phone || '';
-        document.getElementById('mapUrl').value = db.contact.map || '';
-        document.getElementById('instagramUrl').value = db.contact.instagram || '';
-        document.getElementById('facebookUrl').value = db.contact.facebook || '';
-        document.getElementById('whatsappUrl').value = db.contact.whatsapp || '';
-
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            db.contact.phone = document.getElementById('contactPhone').value;
-            db.contact.map = document.getElementById('mapUrl').value;
-            db.contact.instagram = document.getElementById('instagramUrl').value;
-            db.contact.facebook = document.getElementById('facebookUrl').value;
-            db.contact.whatsapp = document.getElementById('whatsappUrl').value;
-            saveDB();
-        });
+        // ---- Contact (Moved to initDashboard) ----
 
         // ---- Testimonials ----
         function renderTestimonials() {
@@ -683,6 +638,55 @@
                     db.settings.whatsapp = document.getElementById('whatsapp').value;
                     db.settings.address = document.getElementById('address').value;
                     db.settings.businessHours = document.getElementById('businessHours').value;
+                    saveDB();
+                });
+
+                // ---- About Form Init ----
+                document.getElementById('aboutTitle').value = db.about.title || '';
+                document.getElementById('aboutText').value = db.about.text || '';
+                document.getElementById('currentAboutImg').src = db.about.image || 'assets/images/service-beard.png';
+
+                document.getElementById('aboutForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const fileInput = document.getElementById('aboutFileInput');
+
+                    const updateData = () => {
+                        db.about.title = document.getElementById('aboutTitle').value;
+                        db.about.text = document.getElementById('aboutText').value;
+                        saveDB();
+                        document.getElementById('currentAboutImg').src = db.about.image;
+                    };
+
+                    if (fileInput.files && fileInput.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            if (event.target.result.length > 1500000) {
+                                alert('Resim boyutu çok büyük! Daha küçük bir dosya seçin.');
+                                return;
+                            }
+                            db.about.image = event.target.result;
+                            updateData();
+                        };
+                        reader.readAsDataURL(fileInput.files[0]);
+                    } else {
+                        updateData();
+                    }
+                });
+
+                // ---- Contact Form Init ----
+                document.getElementById('contactPhone').value = db.contact.phone || '';
+                document.getElementById('mapUrl').value = db.contact.map || '';
+                document.getElementById('instagramUrl').value = db.contact.instagram || '';
+                document.getElementById('facebookUrl').value = db.contact.facebook || '';
+                document.getElementById('whatsappUrl').value = db.contact.whatsapp || '';
+
+                document.getElementById('contactForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    db.contact.phone = document.getElementById('contactPhone').value;
+                    db.contact.map = document.getElementById('mapUrl').value;
+                    db.contact.instagram = document.getElementById('instagramUrl').value;
+                    db.contact.facebook = document.getElementById('facebookUrl').value;
+                    db.contact.whatsapp = document.getElementById('whatsappUrl').value;
                     saveDB();
                 });
 
