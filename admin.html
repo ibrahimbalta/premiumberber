@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli | Premium Barber</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <i class="fas fa-scissors"></i>
+            <h2>PANEL</h2>
+        </div>
+
+        <div class="sidebar-label">Yönetim</div>
+        <div class="nav-item active" data-tab="general"><i class="fas fa-sliders-h"></i> Genel Ayarlar</div>
+        <div class="nav-item" data-tab="hizmetler"><i class="fas fa-cut"></i> Hizmetler</div>
+        <div class="nav-item" data-tab="ekip"><i class="fas fa-users"></i> Ekip</div>
+        <div class="nav-item" data-tab="hakkimizda"><i class="fas fa-info-circle"></i> Hakkımızda</div>
+        <div class="nav-item" data-tab="galeri"><i class="fas fa-images"></i> Galeri</div>
+        <div class="nav-item" data-tab="iletisim"><i class="fas fa-address-book"></i> İletişim</div>
+        <div class="nav-item" data-tab="yorumlar"><i class="fas fa-star"></i> Yorumlar</div>
+        <div class="nav-item" data-tab="saatler"><i class="fas fa-clock"></i> Çalışma Saatleri</div>
+
+        <div class="nav-item logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Yönetim Paneli</h1>
+            <p>Sitenizi buradan kolayca yönetin.</p>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-cut"></i></div>
+                <div class="stat-card-info">
+                    <h3 id="statServices">0</h3>
+                    <span>Hizmet</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-images"></i></div>
+                <div class="stat-card-info">
+                    <h3 id="statGallery">0</h3>
+                    <span>Galeri Fotoğrafı</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-card-info">
+                    <h3 id="statTestimonials">0</h3>
+                    <span>Müşteri Yorumu</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-card-info">
+                    <h3 id="statTeam">0</h3>
+                    <span>Ekip Üyesi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Genel Ayarlar ===== -->
+        <div id="general" class="tab-content active">
+            <div class="admin-card">
+                <h3><i class="fas fa-sliders-h"></i> Genel Ayarlar</h3>
+                <form class="admin-form" id="generalForm">
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp Numarası (Ülke Kodu ile)</label>
+                        <input type="text" id="whatsapp" placeholder="905551234567">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Adres</label>
+                        <input type="text" id="address" placeholder="Tam adresinizi yazın">
+                    </div>
+                    <div class="form-group">
+                        <label for="businessHours">Çalışma Saatleri Metni</label>
+                        <input type="text" id="businessHours" placeholder="09:00 - 21:00">
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-save"></i> Ayarları Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Hizmetler ===== -->
+        <div id="hizmetler" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-cut"></i> Hizmetleri Yönet</h3>
+                <div id="servicesList"></div>
+                <hr class="admin-divider">
+                <div class="admin-subtitle"><i class="fas fa-plus-circle"></i> Yeni Hizmet Ekle</div>
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Hizmet Adı</label>
+                        <input type="text" id="newServiceName" placeholder="Örn: Saç Boyama">
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <input type="text" id="newServiceDesc" placeholder="Kısa bir açıklama yazın">
+                    </div>
+                    <div class="form-group">
+                        <label>Fiyat (Opsiyonel)</label>
+                        <input type="text" id="newServicePrice" placeholder="Örn: 250₺">
+                    </div>
+                    <button class="add-btn" onclick="addService()"><i class="fas fa-plus"></i> Ekle</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Ekip ===== -->
+        <div id="ekip" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-users"></i> Ekip Üyelerini Yönet</h3>
+                <div id="teamList"></div>
+                <hr class="admin-divider">
+                <div class="admin-subtitle"><i class="fas fa-user-plus"></i> Yeni Ekip Üyesi Ekle</div>
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Ad Soyad</label>
+                        <input type="text" id="newTeamName" placeholder="Örn: Ahmet Usta">
+                    </div>
+                    <div class="form-group">
+                        <label>Unvan / Uzmanlık</label>
+                        <input type="text" id="newTeamRole" placeholder="Örn: Baş Berber">
+                    </div>
+                    <div class="form-group">
+                        <label>Açıklama</label>
+                        <input type="text" id="newTeamDesc" placeholder="Kısa tanıtım">
+                    </div>
+                    <div class="form-group">
+                        <label>Fotoğraf (Bilgisayardan Seç)</label>
+                        <input type="file" id="teamFileInput" accept="image/*" style="padding: 10px 0;">
+                    </div>
+                    <div class="form-group">
+                        <label>Veya Fotoğraf URL</label>
+                        <input type="text" id="newTeamImage" placeholder="https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram Linki (Opsiyonel)</label>
+                        <input type="text" id="newTeamInstagram" placeholder="https://instagram.com/...">
+                    </div>
+                    <button class="add-btn" onclick="addTeamMember()"><i class="fas fa-plus"></i> Ekle</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Hakkımızda ===== -->
+        <div id="hakkimizda" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-info-circle"></i> Hakkımızda Bölümü</h3>
+                <form class="admin-form" id="aboutForm">
+                    <div class="form-group">
+                        <label>Bölüm Başlığı</label>
+                        <input type="text" id="aboutTitle">
+                    </div>
+                    <div class="form-group">
+                        <label>Hakkımızda Metni</label>
+                        <textarea id="aboutText" rows="6"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bölüm Resmi (Bilgisayardan Seç)</label>
+                        <input type="file" id="aboutFileInput" accept="image/*" style="padding: 10px 0;">
+                        <div id="aboutImgPreview" style="margin-top: 16px;">
+                            <img id="currentAboutImg" src="" style="width: 140px; height: 140px; object-fit: cover; border-radius: 8px; border: 1px solid var(--glass-border);">
+                        </div>
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-save"></i> Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Galeri ===== -->
+        <div id="galeri" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-images"></i> Galeriyi Yönet</h3>
+                <div id="galleryList"></div>
+                <hr class="admin-divider">
+                <div class="admin-subtitle"><i class="fas fa-cloud-upload-alt"></i> Yeni Fotoğraf Ekle</div>
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Bilgisayardan Seç</label>
+                        <input type="file" id="galleryFileInput" accept="image/*" style="padding: 10px 0;">
+                    </div>
+                    <div class="form-group">
+                        <label>Veya Resim URL</label>
+                        <input type="text" id="newGalleryUrl" placeholder="https://...">
+                    </div>
+                    <button class="add-btn" onclick="addGalleryItem()"><i class="fas fa-plus"></i> Ekle</button>
+                    <p id="uploadStatus" style="font-size: 0.78rem; margin-top: 8px; color: var(--text-muted);"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB: İletişim ===== -->
+        <div id="iletisim" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-address-book"></i> Harita & Sosyal Medya</h3>
+                <form class="admin-form" id="contactForm">
+                    <div class="form-group">
+                        <label>Telefon Numarası</label>
+                        <input type="text" id="contactPhone" placeholder="0555 123 45 67">
+                    </div>
+                    <div class="form-group">
+                        <label>Google Harita Embed URL</label>
+                        <textarea id="mapUrl" rows="3" placeholder="iframe src değeri..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram Profil Linki</label>
+                        <input type="text" id="instagramUrl" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label>Facebook Profil Linki</label>
+                        <input type="text" id="facebookUrl" placeholder="https://facebook.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp Direkt Mesaj Linki</label>
+                        <input type="text" id="whatsappUrl" placeholder="https://wa.me/905551234567">
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-save"></i> Bağlantıları Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Yorumlar ===== -->
+        <div id="yorumlar" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-star"></i> Müşteri Yorumları</h3>
+                <div id="testimonialsList"></div>
+                <hr class="admin-divider">
+                <div class="admin-subtitle"><i class="fas fa-comment-dots"></i> Yeni Yorum Ekle</div>
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Müşteri Adı</label>
+                        <input type="text" id="newTestimonialName" placeholder="Örn: Ahmet Yılmaz">
+                    </div>
+                    <div class="form-group">
+                        <label>Yorum Metni</label>
+                        <textarea id="newTestimonialText" rows="3" placeholder="Müşterinin yorumunu yazın..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hizmet Türü</label>
+                        <input type="text" id="newTestimonialService" placeholder="Örn: Saç Kesimi">
+                    </div>
+                    <div class="form-group">
+                        <label>Puan (1-5)</label>
+                        <select id="newTestimonialRating">
+                            <option value="5" selected>⭐⭐⭐⭐⭐ 5 Yıldız</option>
+                            <option value="4">⭐⭐⭐⭐ 4 Yıldız</option>
+                            <option value="3">⭐⭐⭐ 3 Yıldız</option>
+                            <option value="2">⭐⭐ 2 Yıldız</option>
+                            <option value="1">⭐ 1 Yıldız</option>
+                        </select>
+                    </div>
+                    <button class="add-btn" onclick="addTestimonial()"><i class="fas fa-plus"></i> Yorum Ekle</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TAB: Çalışma Saatleri ===== -->
+        <div id="saatler" class="tab-content">
+            <div class="admin-card">
+                <h3><i class="fas fa-clock"></i> Çalışma Saatleri</h3>
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.88rem;">Bu saatler ana sayfadaki canlı "Açık/Kapalı" rozetini yönetir.</p>
+                <form class="admin-form" id="hoursForm">
+                    <div class="form-group">
+                        <label>Açılış Saati</label>
+                        <input type="time" id="openTime" value="09:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Kapanış Saati</label>
+                        <input type="time" id="closeTime" value="21:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Çalışma Günleri</label>
+                        <input type="text" id="workDays" placeholder="Örn: Pazartesi - Pazar">
+                    </div>
+                    <button type="submit" class="save-btn"><i class="fas fa-save"></i> Saatleri Kaydet</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Status Toast -->
+        <p id="statusMsg" class="status-msg"><i class="fas fa-check-circle"></i> Değişiklikler başarıyla kaydedildi!</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!--  JAVASCRIPT                                  -->
+    <!-- ============================================ -->
+    <script>
+        // Auth Check
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'login.html';
+        });
+
+        // Tab Management
+        document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item[data-tab]').forEach(i => i.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById(item.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Default Data
+        const defaultData = {
+            settings: {
+                whatsapp: '905551234567',
+                address: 'Merkez Mahallesi, Atatürk Caddesi No: 42, İstanbul',
+                businessHours: '09:00 - 21:00'
+            },
+            workingHours: {
+                open: '09:00',
+                close: '21:00',
+                days: 'Pazartesi - Pazar'
+            },
+            services: [
+                { name: 'Modern Saç Kesimi', desc: 'Kafa yapınıza ve tarzınıza en uygun modern fade ve klasik kesimler.', price: '250₺' },
+                { name: 'Sakal Tasarımı', desc: 'Ustura ile hassas düzeltmeler ve yüz tipinize uygun sakal formları.', price: '150₺' },
+                { name: 'Damat Tıraşı', desc: 'En özel gününüzde kusursuz görünmeniz için detaylı hazırlık süreci.', price: '800₺' },
+                { name: 'Cilt Bakımı', desc: 'Siyah nokta temizliği, buhar terapisi ve canlandırıcı maske uygulamaları.', price: '200₺' },
+                { name: 'Saç Kamuflaj', desc: 'Beyaz saçlar için doğal görünümlü, pratik renklendirme çözümleri.', price: '300₺' },
+                { name: 'Çocuk Kesimi', desc: 'Minik misafirlerimiz için sabırlı ve eğlenceli tıraş deneyimi.', price: '150₺' }
+            ],
+            about: {
+                title: 'Premium Barber Deneyimi',
+                text: 'Modern tekniklerle donatılmış profesyonel bir hizmet anlayışıyla, erkek müşterilerimize saç, sakal ve cilt bakımı alanlarında kapsamlı çözümler sunuyoruz.',
+                image: 'assets/images/service-beard.png'
+            },
+            contact: {
+                phone: '0555 123 45 67',
+                map: '',
+                instagram: '#',
+                facebook: '#',
+                whatsapp: 'https://wa.me/905551234567'
+            },
+            gallery: [
+                'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=600',
+                'https://images.unsplash.com/photo-1599351473299-d83950af757a?auto=format&fit=crop&q=80&w=600',
+                'https://images.unsplash.com/photo-1621605815841-aa88c82b0ad2?auto=format&fit=crop&q=80&w=600'
+            ],
+            testimonials: [
+                { name: 'Ahmet Yılmaz', text: 'Gittiğim en iyi kuaför. İşinin gerçek ustası.', service: 'Düzenli Müşteri', rating: 5 },
+                { name: 'Mehmet Kara', text: 'Damat tıraşım için geldim, harika bir deneyimdi.', service: 'Damat Tıraşı', rating: 5 },
+                { name: 'Can Demir', text: 'Oğlumu her zaman buraya getiriyorum. Tavsiye ederim.', service: 'Çocuk Kesimi', rating: 5 }
+            ],
+            team: [
+                { name: 'Ahmet Usta', role: 'Baş Berber', desc: '15 yıllık deneyimiyle modern fade ve klasik kesim uzmanı.', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400', instagram: '#' },
+                { name: 'Mehmet Kaya', role: 'Sakal Uzmanı', desc: 'Sakal tasarımı ve ustura tıraşında ödüllü berber.', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400', instagram: '#' }
+            ]
+        };
+
+        let savedData = {};
+        try { savedData = JSON.parse(localStorage.getItem('kuaforDB')) || {}; } catch(e) { savedData = {}; }
+
+        let db = {
+            settings: { ...defaultData.settings, ...savedData.settings },
+            workingHours: { ...defaultData.workingHours, ...savedData.workingHours },
+            services: savedData.services || defaultData.services,
+            about: { ...defaultData.about, ...savedData.about },
+            contact: { ...defaultData.contact, ...savedData.contact },
+            gallery: savedData.gallery || defaultData.gallery,
+            testimonials: savedData.testimonials || defaultData.testimonials,
+            team: savedData.team || defaultData.team
+        };
+
+        function saveDB() {
+            localStorage.setItem('kuaforDB', JSON.stringify(db));
+            updateStats();
+            const msg = document.getElementById('statusMsg');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 3000);
+        }
+
+        function updateStats() {
+            document.getElementById('statServices').textContent = db.services.length;
+            document.getElementById('statGallery').textContent = db.gallery.length;
+            document.getElementById('statTestimonials').textContent = db.testimonials.length;
+            document.getElementById('statTeam').textContent = db.team.length;
+        }
+
+        // ---- General Settings ----
+        document.getElementById('whatsapp').value = db.settings.whatsapp;
+        document.getElementById('address').value = db.settings.address;
+        document.getElementById('businessHours').value = db.settings.businessHours;
+
+        document.getElementById('generalForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            db.settings.whatsapp = document.getElementById('whatsapp').value;
+            db.settings.address = document.getElementById('address').value;
+            db.settings.businessHours = document.getElementById('businessHours').value;
+            saveDB();
+        });
+
+        // ---- Services ----
+        function renderServices() {
+            const list = document.getElementById('servicesList');
+            list.innerHTML = '';
+            db.services.forEach((s, i) => {
+                list.innerHTML += `<div class="list-item">
+                    <div class="list-item-info">
+                        <strong>${s.name}${s.price ? ` — <span style="color: var(--primary-gold);">${s.price}</span>` : ''}</strong>
+                        <span>${s.desc}</span>
+                    </div>
+                    <i class="fas fa-trash delete-btn" onclick="deleteService(${i})"></i>
+                </div>`;
+            });
+        }
+
+        function addService() {
+            const name = document.getElementById('newServiceName').value;
+            const desc = document.getElementById('newServiceDesc').value;
+            const price = document.getElementById('newServicePrice').value;
+            if (name && desc) {
+                db.services.push({ name, desc, price });
+                document.getElementById('newServiceName').value = '';
+                document.getElementById('newServiceDesc').value = '';
+                document.getElementById('newServicePrice').value = '';
+                renderServices();
+                saveDB();
+            }
+        }
+
+        function deleteService(i) {
+            db.services.splice(i, 1);
+            renderServices();
+            saveDB();
+        }
+
+        // ---- Team ----
+        function renderTeam() {
+            const list = document.getElementById('teamList');
+            if (!list) return;
+            list.innerHTML = '';
+            db.team.forEach((m, i) => {
+                list.innerHTML += `<div class="team-admin-item">
+                    <img src="${m.image}" alt="${m.name}">
+                    <div class="team-info">
+                        <strong>${m.name}</strong>
+                        <div class="role-tag">${m.role}</div>
+                        <span>${m.desc}</span>
+                    </div>
+                    <i class="fas fa-trash delete-btn" onclick="deleteTeamMember(${i})"></i>
+                </div>`;
+            });
+        }
+
+        function addTeamMember() {
+            const name = document.getElementById('newTeamName').value;
+            const role = document.getElementById('newTeamRole').value;
+            const desc = document.getElementById('newTeamDesc').value;
+            const imageUrl = document.getElementById('newTeamImage').value;
+            const fileInput = document.getElementById('teamFileInput');
+            const instagram = document.getElementById('newTeamInstagram').value || '#';
+
+            if (!name || !role) return;
+
+            const finishAdd = (image) => {
+                db.team.push({ name, role, desc, image, instagram });
+                document.getElementById('newTeamName').value = '';
+                document.getElementById('newTeamRole').value = '';
+                document.getElementById('newTeamDesc').value = '';
+                document.getElementById('newTeamImage').value = '';
+                document.getElementById('newTeamInstagram').value = '';
+                if (fileInput) fileInput.value = '';
+                renderTeam();
+                saveDB();
+            };
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (e.target.result.length > 1500000) {
+                        alert('Resim boyutu çok büyük! Daha küçük bir dosya seçin.');
+                        return;
+                    }
+                    finishAdd(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (imageUrl) {
+                finishAdd(imageUrl);
+            } else {
+                finishAdd('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400');
+            }
+        }
+
+        function deleteTeamMember(i) {
+            db.team.splice(i, 1);
+            renderTeam();
+            saveDB();
+        }
+
+        // ---- About ----
+        document.getElementById('aboutTitle').value = db.about.title;
+        document.getElementById('aboutText').value = db.about.text;
+        document.getElementById('currentAboutImg').src = db.about.image || 'assets/images/service-beard.png';
+
+        document.getElementById('aboutForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById('aboutFileInput');
+
+            const updateData = () => {
+                db.about.title = document.getElementById('aboutTitle').value;
+                db.about.text = document.getElementById('aboutText').value;
+                saveDB();
+                document.getElementById('currentAboutImg').src = db.about.image;
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    if (event.target.result.length > 1500000) {
+                        alert('Resim boyutu çok büyük! Daha küçük bir dosya seçin.');
+                        return;
+                    }
+                    db.about.image = event.target.result;
+                    updateData();
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                updateData();
+            }
+        });
+
+        // ---- Gallery ----
+        function renderGallery() {
+            const list = document.getElementById('galleryList');
+            list.innerHTML = '';
+            db.gallery.forEach((url, i) => {
+                const displayUrl = url.startsWith('data:') ? 'Yüklenen Resim' : url;
+                list.innerHTML += `<div class="gallery-item-admin">
+                    <img src="${url}" alt="Gallery">
+                    <span>${displayUrl}</span>
+                    <i class="fas fa-trash delete-btn" onclick="deleteGalleryItem(${i})"></i>
+                </div>`;
+            });
+        }
+
+        function addGalleryItem() {
+            const urlInput = document.getElementById('newGalleryUrl');
+            const fileInput = document.getElementById('galleryFileInput');
+            const status = document.getElementById('uploadStatus');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    if (e.target.result.length > 1500000) {
+                        status.textContent = '⚠️ Resim boyutu çok büyük!';
+                        status.style.color = 'var(--danger)';
+                        return;
+                    }
+                    db.gallery.push(e.target.result);
+                    fileInput.value = '';
+                    renderGallery();
+                    saveDB();
+                    status.textContent = '✅ Resim yüklendi!';
+                    status.style.color = 'var(--success)';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (urlInput.value) {
+                db.gallery.push(urlInput.value);
+                urlInput.value = '';
+                renderGallery();
+                saveDB();
+                status.textContent = '✅ URL eklendi!';
+                status.style.color = 'var(--success)';
+            }
+        }
+
+        function deleteGalleryItem(i) {
+            db.gallery.splice(i, 1);
+            renderGallery();
+            saveDB();
+        }
+
+        // ---- Contact ----
+        document.getElementById('contactPhone').value = db.contact.phone || '';
+        document.getElementById('mapUrl').value = db.contact.map || '';
+        document.getElementById('instagramUrl').value = db.contact.instagram || '';
+        document.getElementById('facebookUrl').value = db.contact.facebook || '';
+        document.getElementById('whatsappUrl').value = db.contact.whatsapp || '';
+
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            db.contact.phone = document.getElementById('contactPhone').value;
+            db.contact.map = document.getElementById('mapUrl').value;
+            db.contact.instagram = document.getElementById('instagramUrl').value;
+            db.contact.facebook = document.getElementById('facebookUrl').value;
+            db.contact.whatsapp = document.getElementById('whatsappUrl').value;
+            saveDB();
+        });
+
+        // ---- Testimonials ----
+        function renderTestimonials() {
+            const list = document.getElementById('testimonialsList');
+            if (!list) return;
+            list.innerHTML = '';
+            db.testimonials.forEach((t, i) => {
+                let stars = '';
+                for (let s = 0; s < 5; s++) {
+                    stars += `<i class="fa${s < (t.rating || 5) ? 's' : 'r'} fa-star"></i>`;
+                }
+                list.innerHTML += `<div class="testimonial-admin-item">
+                    <div class="quote-mark">\u201C</div>
+                    <div class="stars">${stars}</div>
+                    <p class="text">"${t.text}"</p>
+                    <div class="author">
+                        <div class="author-icon"><i class="fas fa-user"></i></div>
+                        <div>
+                            <strong>${t.name}</strong>
+                            <span>${t.service}</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-trash delete-testimonial" onclick="deleteTestimonial(${i})"></i>
+                </div>`;
+            });
+        }
+
+        function addTestimonial() {
+            const name = document.getElementById('newTestimonialName').value;
+            const text = document.getElementById('newTestimonialText').value;
+            const service = document.getElementById('newTestimonialService').value;
+            const rating = parseInt(document.getElementById('newTestimonialRating').value) || 5;
+            if (name && text && service) {
+                db.testimonials.push({ name, text, service, rating });
+                document.getElementById('newTestimonialName').value = '';
+                document.getElementById('newTestimonialText').value = '';
+                document.getElementById('newTestimonialService').value = '';
+                renderTestimonials();
+                saveDB();
+            }
+        }
+
+        function deleteTestimonial(i) {
+            db.testimonials.splice(i, 1);
+            renderTestimonials();
+            saveDB();
+        }
+
+        // ---- Working Hours ----
+        document.getElementById('openTime').value = db.workingHours.open || '09:00';
+        document.getElementById('closeTime').value = db.workingHours.close || '21:00';
+        document.getElementById('workDays').value = db.workingHours.days || 'Pazartesi - Pazar';
+
+        document.getElementById('hoursForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            db.workingHours.open = document.getElementById('openTime').value;
+            db.workingHours.close = document.getElementById('closeTime').value;
+            db.workingHours.days = document.getElementById('workDays').value;
+            saveDB();
+        });
+
+        // ---- Initial Render ----
+        renderServices();
+        renderGallery();
+        renderTestimonials();
+        renderTeam();
+        updateStats();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Barber | Profesyonel Erkek Kuaförü & Grooming</title>
+    <meta name="description" content="Profesyonel erkek saç kesimi, sakal tasarımı ve kişisel bakım hizmetleri sunan 5 yıldızlı bir berber salonu. Online randevu ile koltuğunuzu hemen ayırın.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">PREMIUM BARBER</a>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="active">Ana Sayfa</a>
+            <a href="hizmetler.html">Hizmetler</a>
+            <a href="#hakkimizda">Hakkımızda</a>
+            <a href="galeri.html">Galeri</a>
+            <a href="#iletisim">İletişim</a>
+        </div>
+
+        <!-- Live Status Badge -->
+        <div class="live-status-badge" id="liveStatusBadge">
+            <span class="status-dot"></span>
+            <span id="statusText">Kontrol ediliyor...</span>
+        </div>
+
+        <a href="#randevu" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.75rem;">Randevu Al</a>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-subtitle">
+                <span>Premium Erkek Grooming</span>
+            </div>
+            <h1>Tarzınızı<br><span>Ustalıkla Şekillendiriyoruz</span></h1>
+            <p>Modern tekniklerle geleneksel ustalığı birleştiren, özel tasarım saç kesimi ve sakal bakım deneyimi.</p>
+            <div class="hero-btns">
+                <a href="#hizmetler" class="btn btn-primary"><i class="fas fa-cut"></i> Hizmetleri İncele</a>
+                <a href="#randevu" class="btn btn-outline"><i class="fas fa-calendar-check"></i> Randevu Al</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Keşfet</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- ===== SERVICES SECTION ===== -->
+    <section class="section" id="hizmetler">
+        <div class="section-header">
+            <div class="section-tag">Ustalık Eseri</div>
+            <h2>Hizmetlerimiz & Fiyatlar</h2>
+            <p>Her detayın titizlikle işlendiği, size özel profesyonel bakım hizmetleri.</p>
+        </div>
+        
+        <div class="services-grid" id="servicesGrid">
+            <!-- Dynamically rendered -->
+        </div>
+    </section>
+
+    <!-- ===== BEFORE / AFTER SECTION ===== -->
+    <section class="section ba-section" id="oncesonra">
+        <div class="section-header">
+            <div class="section-tag">Dönüşümü Gör</div>
+            <h2>Önce & Sonra</h2>
+            <p>Kaydırıcıyı sürükleyerek farkı keşfedin.</p>
+        </div>
+        
+        <div class="ba-container" id="baSlider">
+            <img class="ba-before" src="https://images.unsplash.com/photo-1621605815841-aa88c82b0ad2?auto=format&fit=crop&q=80&w=900" alt="Önce">
+            <img class="ba-after" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=900" alt="Sonra">
+            <div class="ba-handle" id="baHandle"></div>
+            <div class="ba-label before-label">Önce</div>
+            <div class="ba-label after-label">Sonra</div>
+        </div>
+    </section>
+
+    <!-- ===== TEAM SECTION ===== -->
+    <section class="section team-section" id="ekip">
+        <div class="section-header">
+            <div class="section-tag">Profesyonel Kadro</div>
+            <h2>Usta Berberlerimiz</h2>
+            <p>Alanında uzman, deneyimli ekibimizle tanışın.</p>
+        </div>
+        
+        <div class="team-grid" id="teamGrid">
+            <!-- Dynamically rendered -->
+        </div>
+    </section>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <section class="section about" id="hakkimizda">
+        <div class="about-image"></div>
+        <div class="about-content">
+            <div class="section-tag" style="justify-content: flex-start;">Hikayemiz</div>
+            <h2 id="dyn-about-title">Premium Barber Deneyimi</h2>
+            <p id="dyn-about-text">Modern tekniklerle donatılmış profesyonel bir hizmet anlayışıyla, erkek müşterilerimize saç, sakal ve cilt bakımı alanlarında kapsamlı çözümler sunuyoruz. Salonumuzun maskülen ve rahatlatıcı atmosferinde, kendinizi yenilenmiş hissedeceksiniz.</p>
+            
+            <div class="about-stats">
+                <div class="stat-item">
+                    <div class="stat-number" id="statYears">10+</div>
+                    <div class="stat-label">Yıl Deneyim</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statClients">5000+</div>
+                    <div class="stat-label">Mutlu Müşteri</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="statRating">4.9</div>
+                    <div class="stat-label">Yıldız Puan</div>
+                </div>
+            </div>
+
+            <a href="galeri.html" class="btn btn-outline" style="margin-top: 40px;"><i class="fas fa-images"></i> Çalışmalarımızı Görün</a>
+        </div>
+    </section>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <section class="section" id="galeri" style="background: var(--dark-bg);">
+        <div class="section-header">
+            <div class="section-tag">Portfolyo</div>
+            <h2>Fotoğraf Galerisi</h2>
+            <p>Sanatımızdan seçme kareler.</p>
+        </div>
+        
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Dynamically rendered -->
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section class="section" id="yorumlar" style="background: var(--soft-dark);">
+        <div class="section-header">
+            <div class="section-tag">Güven & Kalite</div>
+            <h2>Müşteri Yorumları</h2>
+            <p>Memnuniyetleriyle bizi onurlandıran müşterilerimiz.</p>
+        </div>
+        <div class="testimonials-grid" id="testimonialsGrid">
+            <!-- Dynamically rendered -->
+        </div>
+    </section>
+
+    <!-- ===== APPOINTMENT SECTION ===== -->
+    <section class="section appointment" id="randevu">
+        <div class="booking-container">
+            <div class="section-header" style="margin-bottom: 40px;">
+                <div class="section-tag">Online Rezervasyon</div>
+                <h2>Koltuğunuzu Ayırın</h2>
+                <p>Beklememek için randevunuzu şimdi oluşturun.</p>
+            </div>
+            <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Adınız Soyadınız</label>
+                    <input type="text" id="name" placeholder="Örn: Mehmet Öz" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefon Numaranız</label>
+                    <input type="tel" id="phone" placeholder="05XX XXX XX XX" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">Hizmet Seçiniz</label>
+                    <select id="service" required>
+                        <option value="">Hizmet Seçin...</option>
+                        <option value="Saç Kesimi">Saç Kesimi</option>
+                        <option value="Sakal Tasarımı">Sakal Tasarımı</option>
+                        <option value="Damat Tıraşı">Damat Tıraşı</option>
+                        <option value="Cilt Bakımı">Cilt Bakımı</option>
+                        <option value="Saç Kamuflaj">Saç Kamuflaj</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Tarih</label>
+                    <input type="date" id="date" required>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fab fa-whatsapp"></i> WhatsApp ile Randevu Al</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT & INFO ===== -->
+    <section class="section" id="iletisim">
+        <div class="info-section">
+            <div class="contact-info">
+                <div class="section-tag" style="justify-content: flex-start; margin-bottom: 12px;">Bize Ulaşın</div>
+                <h2 style="font-size: 2.4rem; margin-bottom: 36px;">İletişim Bilgileri</h2>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="info-text">
+                        <h4>Adres</h4>
+                        <p id="dyn-address">Merkez Mahallesi, Atatürk Caddesi No: 42, İstanbul</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="info-text">
+                        <h4>Telefon</h4>
+                        <p id="dyn-phone">0555 123 45 67</p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-clock"></i></div>
+                    <div class="info-text">
+                        <h4>Çalışma Saatleri</h4>
+                        <p id="dyn-hours">Hafta İçi & Hafta Sonu: 09:00 - 21:00</p>
+                    </div>
+                </div>
+
+                <div class="social-icons" style="margin-top: 30px;">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <iframe id="dyn-map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3008.0!2d28.97!3d41.01!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAyJzAwLjAiTiAyOMKwNTgnMDAuMCJF!5e0!3m2!1str!2str!4v1684150000000!5m2!1str!2str" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h3>PREMIUM BARBER</h3>
+                <p>En prestijli erkek grooming salonu. Geleneksel ustalığı modern tarzla birleştiriyoruz.</p>
+                <div class="social-icons" style="margin-top: 20px;">
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Hızlı Menü</h4>
+                <ul>
+                    <li><a href="index.html">Ana Sayfa</a></li>
+                    <li><a href="hizmetler.html">Hizmetler</a></li>
+                    <li><a href="#hakkimizda">Hakkımızda</a></li>
+                    <li><a href="galeri.html">Galeri</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Hizmetler</h4>
+                <ul>
+                    <li><a href="#hizmetler">Saç Kesimi</a></li>
+                    <li><a href="#hizmetler">Sakal Tasarımı</a></li>
+                    <li><a href="#hizmetler">Cilt Bakımı</a></li>
+                    <li><a href="#hizmetler">Damat Tıraşı</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Yönetim</h4>
+                <ul>
+                    <li><a href="login.html"><i class="fas fa-lock"></i> Yönetici Girişi</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 Premium Barber | Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/905551234567" target="_blank" class="whatsapp-float" id="whatsappFloat" title="WhatsApp ile mesaj gönderin">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>
