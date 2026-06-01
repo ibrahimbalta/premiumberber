@@ -654,61 +654,65 @@
 
         // ---- Dashboard Initialization ----
         async function initDashboard() {
-            let savedData = {};
             try {
-                savedData = await window.loadDB();
-            } catch(e) {
-                console.error("Dashboard DB load error:", e);
-            }
+                let savedData = {};
+                try {
+                    savedData = await window.loadDB();
+                } catch(e) {
+                    console.error("Dashboard DB load error:", e);
+                }
 
-            db = {
-                settings: { ...defaultData.settings, ...savedData.settings },
-                workingHours: { ...defaultData.workingHours, ...savedData.workingHours },
-                services: savedData.services || defaultData.services,
-                about: { ...defaultData.about, ...savedData.about },
-                contact: { ...defaultData.contact, ...savedData.contact },
-                gallery: savedData.gallery || defaultData.gallery,
-                testimonials: savedData.testimonials || defaultData.testimonials,
-                team: savedData.team || defaultData.team
-            };
+                db = {
+                    settings: { ...defaultData.settings, ...savedData.settings },
+                    workingHours: { ...defaultData.workingHours, ...savedData.workingHours },
+                    services: savedData.services || defaultData.services,
+                    about: { ...defaultData.about, ...savedData.about },
+                    contact: { ...defaultData.contact, ...savedData.contact },
+                    gallery: savedData.gallery || defaultData.gallery,
+                    testimonials: savedData.testimonials || defaultData.testimonials,
+                    team: savedData.team || defaultData.team
+                };
 
-            // ---- General Settings Form Init ----
-            document.getElementById('whatsapp').value = db.settings.whatsapp || '';
-            document.getElementById('address').value = db.settings.address || '';
-            document.getElementById('businessHours').value = db.settings.businessHours || '';
+                // ---- General Settings Form Init ----
+                document.getElementById('whatsapp').value = db.settings.whatsapp || '';
+                document.getElementById('address').value = db.settings.address || '';
+                document.getElementById('businessHours').value = db.settings.businessHours || '';
 
-            document.getElementById('generalForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                db.settings.whatsapp = document.getElementById('whatsapp').value;
-                db.settings.address = document.getElementById('address').value;
-                db.settings.businessHours = document.getElementById('businessHours').value;
-                saveDB();
-            });
+                document.getElementById('generalForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    db.settings.whatsapp = document.getElementById('whatsapp').value;
+                    db.settings.address = document.getElementById('address').value;
+                    db.settings.businessHours = document.getElementById('businessHours').value;
+                    saveDB();
+                });
 
-            // ---- Working Hours Form Init ----
-            document.getElementById('openTime').value = db.workingHours.open || '09:00';
-            document.getElementById('closeTime').value = db.workingHours.close || '21:00';
-            document.getElementById('workDays').value = db.workingHours.days || 'Pazartesi - Pazar';
+                // ---- Working Hours Form Init ----
+                document.getElementById('openTime').value = db.workingHours.open || '09:00';
+                document.getElementById('closeTime').value = db.workingHours.close || '21:00';
+                document.getElementById('workDays').value = db.workingHours.days || 'Pazartesi - Pazar';
 
-            document.getElementById('hoursForm').addEventListener('submit', (e) => {
-                e.preventDefault();
-                db.workingHours.open = document.getElementById('openTime').value;
-                db.workingHours.close = document.getElementById('closeTime').value;
-                db.workingHours.days = document.getElementById('workDays').value;
-                saveDB();
-            });
+                document.getElementById('hoursForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    db.workingHours.open = document.getElementById('openTime').value;
+                    db.workingHours.close = document.getElementById('closeTime').value;
+                    db.workingHours.days = document.getElementById('workDays').value;
+                    saveDB();
+                });
 
-            // ---- Render All Sections ----
-            renderServices();
-            renderGallery();
-            renderTestimonials();
-            renderTeam();
-            updateStats();
-
-            // Dismiss Loading Overlay
-            const overlay = document.getElementById('dbLoadingOverlay');
-            if (overlay) {
-                overlay.classList.add('fade-out');
+                // ---- Render All Sections ----
+                renderServices();
+                renderGallery();
+                renderTestimonials();
+                renderTeam();
+                updateStats();
+            } catch (err) {
+                console.error("Critical error in dashboard initialization:", err);
+            } finally {
+                // DISMISS LOADING OVERLAY NO MATTER WHAT
+                const overlay = document.getElementById('dbLoadingOverlay');
+                if (overlay) {
+                    overlay.classList.add('fade-out');
+                }
             }
         }
 
