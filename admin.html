@@ -296,9 +296,19 @@
         <p id="statusMsg" class="status-msg"><i class="fas fa-check-circle"></i> Değişiklikler başarıyla kaydedildi!</p>
     </div>
 
+    <!-- DB Loading Overlay -->
+    <div id="dbLoadingOverlay" class="db-loading-overlay">
+        <div class="db-loading-content">
+            <i class="fas fa-circle-notch"></i>
+            <span>Veritabanı Senkronize Ediliyor...</span>
+        </div>
+    </div>
+
     <!-- ============================================ -->
     <!--  JAVASCRIPT                                  -->
     <!-- ============================================ -->
+    <script src="config.js"></script>
+    <script src="database.js"></script>
     <script>
         // Auth Check
         if (localStorage.getItem('isLoggedIn') !== 'true') {
@@ -368,47 +378,34 @@
             ]
         };
 
-        let savedData = {};
-        try { savedData = JSON.parse(localStorage.getItem('kuaforDB')) || {}; } catch(e) { savedData = {}; }
+        let db = {};
 
-        let db = {
-            settings: { ...defaultData.settings, ...savedData.settings },
-            workingHours: { ...defaultData.workingHours, ...savedData.workingHours },
-            services: savedData.services || defaultData.services,
-            about: { ...defaultData.about, ...savedData.about },
-            contact: { ...defaultData.contact, ...savedData.contact },
-            gallery: savedData.gallery || defaultData.gallery,
-            testimonials: savedData.testimonials || defaultData.testimonials,
-            team: savedData.team || defaultData.team
-        };
-
-        function saveDB() {
-            localStorage.setItem('kuaforDB', JSON.stringify(db));
-            updateStats();
+        async function saveDB() {
             const msg = document.getElementById('statusMsg');
+            msg.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Bulut veritabanına kaydediliyor...';
             msg.style.display = 'block';
-            setTimeout(() => msg.style.display = 'none', 3000);
+            
+            const success = await window.saveDB(db);
+            
+            if (success) {
+                msg.innerHTML = '<i class="fas fa-check-circle"></i> Değişiklikler başarıyla kaydedildi!';
+            } else {
+                msg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Hata: Buluta kaydedilemedi (Yerel kaydedildi)';
+            }
+            
+            updateStats();
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
         }
 
         function updateStats() {
+            if (!db || !db.services) return;
             document.getElementById('statServices').textContent = db.services.length;
             document.getElementById('statGallery').textContent = db.gallery.length;
             document.getElementById('statTestimonials').textContent = db.testimonials.length;
             document.getElementById('statTeam').textContent = db.team.length;
         }
-
-        // ---- General Settings ----
-        document.getElementById('whatsapp').value = db.settings.whatsapp;
-        document.getElementById('address').value = db.settings.address;
-        document.getElementById('businessHours').value = db.settings.businessHours;
-
-        document.getElementById('generalForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            db.settings.whatsapp = document.getElementById('whatsapp').value;
-            db.settings.address = document.getElementById('address').value;
-            db.settings.businessHours = document.getElementById('businessHours').value;
-            saveDB();
-        });
 
         // ---- Services ----
         function renderServices() {
@@ -655,25 +652,68 @@
             saveDB();
         }
 
-        // ---- Working Hours ----
-        document.getElementById('openTime').value = db.workingHours.open || '09:00';
-        document.getElementById('closeTime').value = db.workingHours.close || '21:00';
-        document.getElementById('workDays').value = db.workingHours.days || 'Pazartesi - Pazar';
+        // ---- Dashboard Initialization ----
+        async function initDashboard() {
+            let savedData = {};
+            try {
+                savedData = await window.loadDB();
+            } catch(e) {
+                console.error("Dashboard DB load error:", e);
+            }
 
-        document.getElementById('hoursForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            db.workingHours.open = document.getElementById('openTime').value;
-            db.workingHours.close = document.getElementById('closeTime').value;
-            db.workingHours.days = document.getElementById('workDays').value;
-            saveDB();
-        });
+            db = {
+                settings: { ...defaultData.settings, ...savedData.settings },
+                workingHours: { ...defaultData.workingHours, ...savedData.workingHours },
+                services: savedData.services || defaultData.services,
+                about: { ...defaultData.about, ...savedData.about },
+                contact: { ...defaultData.contact, ...savedData.contact },
+                gallery: savedData.gallery || defaultData.gallery,
+                testimonials: savedData.testimonials || defaultData.testimonials,
+                team: savedData.team || defaultData.team
+            };
 
-        // ---- Initial Render ----
-        renderServices();
-        renderGallery();
-        renderTestimonials();
-        renderTeam();
-        updateStats();
+            // ---- General Settings Form Init ----
+            document.getElementById('whatsapp').value = db.settings.whatsapp || '';
+            document.getElementById('address').value = db.settings.address || '';
+            document.getElementById('businessHours').value = db.settings.businessHours || '';
+
+            document.getElementById('generalForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                db.settings.whatsapp = document.getElementById('whatsapp').value;
+                db.settings.address = document.getElementById('address').value;
+                db.settings.businessHours = document.getElementById('businessHours').value;
+                saveDB();
+            });
+
+            // ---- Working Hours Form Init ----
+            document.getElementById('openTime').value = db.workingHours.open || '09:00';
+            document.getElementById('closeTime').value = db.workingHours.close || '21:00';
+            document.getElementById('workDays').value = db.workingHours.days || 'Pazartesi - Pazar';
+
+            document.getElementById('hoursForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                db.workingHours.open = document.getElementById('openTime').value;
+                db.workingHours.close = document.getElementById('closeTime').value;
+                db.workingHours.days = document.getElementById('workDays').value;
+                saveDB();
+            });
+
+            // ---- Render All Sections ----
+            renderServices();
+            renderGallery();
+            renderTestimonials();
+            renderTeam();
+            updateStats();
+
+            // Dismiss Loading Overlay
+            const overlay = document.getElementById('dbLoadingOverlay');
+            if (overlay) {
+                overlay.classList.add('fade-out');
+            }
+        }
+
+        // Start Dashboard Initialization on Load
+        window.addEventListener('DOMContentLoaded', initDashboard);
 
     </script>
 </body>

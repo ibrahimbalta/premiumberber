@@ -461,12 +461,14 @@ if (hamburger && navLinks) {
 // ============================================
 //  WHATSAPP FLOATING BUTTON SYNC
 // ============================================
-const whatsappFloat = document.getElementById('whatsappFloat');
-if (whatsappFloat) {
-    if (db.contact?.whatsapp) {
-        whatsappFloat.href = db.contact.whatsapp;
-    } else if (db.settings?.whatsapp) {
-        whatsappFloat.href = `https://wa.me/${db.settings.whatsapp}`;
+function syncWhatsAppFloat() {
+    const whatsappFloat = document.getElementById('whatsappFloat');
+    if (whatsappFloat) {
+        if (db.contact?.whatsapp) {
+            whatsappFloat.href = db.contact.whatsapp;
+        } else if (db.settings?.whatsapp) {
+            whatsappFloat.href = `https://wa.me/${db.settings.whatsapp}`;
+        }
     }
 }
 
@@ -474,29 +476,53 @@ if (whatsappFloat) {
 // ============================================
 //  INITIALIZATION
 // ============================================
-applyDynamicContent();
-initBeforeAfterSlider();
-initStaticReveals();
+async function initApp() {
+    // 1. Render immediately using cached local data
+    applyDynamicContent();
+    syncWhatsAppFloat();
+    initBeforeAfterSlider();
+    initStaticReveals();
+    updateLiveStatus();
 
-// Poll for admin changes (lightweight)
-setInterval(() => {
+    // 2. Fetch fresh state from async database (Cloud or LocalStorage fallback)
     try {
-        const fresh = JSON.parse(localStorage.getItem('kuaforDB'));
-        if (fresh) {
-            db = {
-                settings: { ...defaultData.settings, ...fresh.settings },
-                workingHours: { ...defaultData.workingHours, ...fresh.workingHours },
-                services: fresh.services || defaultData.services,
-                about: { ...defaultData.about, ...fresh.about },
-                team: fresh.team || defaultData.team,
-                gallery: fresh.gallery || defaultData.gallery,
-                testimonials: fresh.testimonials || defaultData.testimonials,
-                contact: { ...defaultData.contact, ...fresh.contact }
-            };
-            applyDynamicContent();
+        const fresh = await window.loadDB();
+        if (fresh && Object.keys(fresh).length > 0) {
+            updateLocalData(fresh);
         }
-    } catch (e) { /* silent */ }
-}, 3000);
+    } catch(err) {
+        console.warn("Premium Barber: Database load failed:", err);
+    }
+
+    // 3. Periodic polling for remote admin updates
+    setInterval(async () => {
+        try {
+            const fresh = await window.getFreshDB();
+            if (fresh && Object.keys(fresh).length > 0) {
+                updateLocalData(fresh);
+            }
+        } catch (e) { /* silent */ }
+    }, 12000); // 12 seconds sync interval
+}
+
+function updateLocalData(fresh) {
+    db = {
+        settings: { ...defaultData.settings, ...fresh.settings },
+        workingHours: { ...defaultData.workingHours, ...fresh.workingHours },
+        services: fresh.services || defaultData.services,
+        about: { ...defaultData.about, ...fresh.about },
+        team: fresh.team || defaultData.team,
+        gallery: fresh.gallery || defaultData.gallery,
+        testimonials: fresh.testimonials || defaultData.testimonials,
+        contact: { ...defaultData.contact, ...fresh.contact }
+    };
+    applyDynamicContent();
+    syncWhatsAppFloat();
+    updateLiveStatus();
+}
+
+// Kick off app initialization
+initApp();
 
 // Update live status every minute
 setInterval(updateLiveStatus, 60000);
