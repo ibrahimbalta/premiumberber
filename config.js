@@ -5,15 +5,16 @@
 
 const CLOUD_DB_CONFIG = {
     // Set to true to enable shared cloud database synchronisation across all visitors
-    enabled: false,
+    enabled: true,
     
     // Paste your Firebase web configuration credentials here
     firebaseConfig: {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyCUw7yROOFni2Dh0YY1mbtshH822d3iGCg",
+        authDomain: "premiumberber.firebaseapp.com",
+        projectId: "premiumberber",
+        storageBucket: "premiumberber.firebasestorage.app",
+        messagingSenderId: "548893716286",
+        appId: "1:548893716286:web:0e8241aab7ab081a97866f",
+        measurementId: "G-WFE8J0G0Q0"
     }
 };
