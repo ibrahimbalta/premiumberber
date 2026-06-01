@@ -81,8 +81,66 @@ function initFirebase() {
     return firebaseInitializedPromise;
 }
 
+// Image URL mapping to automatically replace Unsplash links (which are IP-blocked in Turkey)
+// with high-quality, unblocked equivalent Pexels and local photo assets.
+const UNBLOCKED_URL_MAP = {
+    // Gallery & Mock Photos
+    '1503951914875-452162b0f3f1': 'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=600',
+    '1599351473299-d83950af757a': 'https://images.pexels.com/photos/1319459/pexels-photo-1319459.jpeg?auto=compress&cs=tinysrgb&w=600',
+    '1621605815841-aa88c82b0ad2': 'https://images.pexels.com/photos/206566/pexels-photo-206566.jpeg?auto=compress&cs=tinysrgb&w=600',
+    '1585747860715-2ba37e788b70': 'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=600',
+    '1593702295094-ada74bc1939a': 'https://images.pexels.com/photos/1453005/pexels-photo-1453005.jpeg?auto=compress&cs=tinysrgb&w=600',
+    '1634449571010-02389ed0f9b0': 'https://images.pexels.com/photos/897717/pexels-photo-897717.jpeg?auto=compress&cs=tinysrgb&w=600',
+    
+    // Team member portrait photos
+    '1507003211169-0a1dd7228f2d': 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400',
+    '1500648767791-00dcc994a43e': 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
+    '1472099645785-5658abf4ff4e': 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=400'
+};
+
+function sanitizeImageUrls(data) {
+    if (!data) return data;
+
+    function getCleanUrl(url) {
+        if (typeof url !== 'string') return url;
+        if (url.includes('unsplash.com')) {
+            for (const [key, val] of Object.entries(UNBLOCKED_URL_MAP)) {
+                if (url.includes(key)) {
+                    return val;
+                }
+            }
+            // Fallback default clean barber image
+            return 'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=600';
+        }
+        return url;
+    }
+
+    // 1. Sanitize Gallery
+    if (Array.isArray(data.gallery)) {
+        data.gallery = data.gallery.map(getCleanUrl);
+    }
+
+    // 2. Sanitize Team Member Images
+    if (Array.isArray(data.team)) {
+        data.team = data.team.map(member => {
+            if (member && member.image) {
+                member.image = getCleanUrl(member.image);
+            }
+            return member;
+        });
+    }
+
+    // 3. Sanitize About Section Image
+    if (data.about && data.about.image) {
+        data.about.image = getCleanUrl(data.about.image);
+    }
+
+    return data;
+}
+
 // Load database (returns db data object)
 window.loadDB = async function() {
+    let rawData = {};
     try {
         const isCloudEnabled = await withTimeout(initFirebase(), 4500, "Firebase initialization timed out");
         if (isCloudEnabled && firestoreDb) {
@@ -95,31 +153,31 @@ window.loadDB = async function() {
                 );
                 
                 if (doc.exists) {
-                    const cloudData = doc.data();
+                    rawData = doc.data();
                     console.log("Premium Barber: Loaded data from Cloud Database.");
-                    
-                    // Keep local storage in sync
-                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(cloudData));
-                    return cloudData;
                 } else {
                     console.log("Premium Barber: Cloud document not found. Initializing with local/default data.");
                     
                     // Read local data to initialize the cloud database document
-                    let localData = {};
                     try {
-                        localData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+                        rawData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
                     } catch (e) {
-                        localData = {};
+                        rawData = {};
                     }
                     
                     // Push to cloud with a timeout
                     await withTimeout(
-                        firestoreDb.collection('config').doc('kuaforDB').set(localData),
+                        firestoreDb.collection('config').doc('kuaforDB').set(rawData),
                         3500,
                         "Firestore write timed out"
                     );
-                    return localData;
                 }
+                
+                // Sanitize and return
+                const sanitizedData = sanitizeImageUrls(rawData);
+                localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(sanitizedData));
+                return sanitizedData;
+
             } catch (err) {
                 console.error("Premium Barber: Error/Timeout fetching from Cloud Database. Falling back to local.", err);
             }
@@ -131,7 +189,8 @@ window.loadDB = async function() {
     // Local Storage Fallback
     try {
         console.log("Premium Barber: Reading database from browser LocalStorage.");
-        return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+        rawData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {};
+        return sanitizeImageUrls(rawData);
     } catch (e) {
         return {};
     }

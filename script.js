@@ -34,31 +34,31 @@ const defaultData = {
             name: 'Ahmet Usta',
             role: 'Baş Berber',
             desc: '15 yıllık deneyimiyle modern fade ve klasik kesim tekniklerinde uzman.',
-            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400',
+            image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400',
             instagram: '#'
         },
         {
             name: 'Mehmet Kaya',
             role: 'Sakal Uzmanı',
             desc: 'Sakal tasarımı ve ustura tıraşında ödüllü berber.',
-            image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=400',
+            image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=400',
             instagram: '#'
         },
         {
             name: 'Can Demir',
             role: 'Stil Danışmanı',
             desc: 'Yüz analizi ve kişiye özel stil önerileri konusunda uzman.',
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400',
+            image: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=400',
             instagram: '#'
         }
     ],
     gallery: [
-        'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&q=80&w=600',
-        'https://images.unsplash.com/photo-1599351473299-d83950af757a?auto=format&fit=crop&q=80&w=600',
-        'https://images.unsplash.com/photo-1621605815841-aa88c82b0ad2?auto=format&fit=crop&q=80&w=600',
-        'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&q=80&w=600',
-        'https://images.unsplash.com/photo-1593702295094-ada74bc1939a?auto=format&fit=crop&q=80&w=600',
-        'https://images.unsplash.com/photo-1634449571010-02389ed0f9b0?auto=format&fit=crop&q=80&w=600'
+        'https://images.pexels.com/photos/1319460/pexels-photo-1319460.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1319459/pexels-photo-1319459.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/206566/pexels-photo-206566.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/1453005/pexels-photo-1453005.jpeg?auto=compress&cs=tinysrgb&w=600',
+        'https://images.pexels.com/photos/897717/pexels-photo-897717.jpeg?auto=compress&cs=tinysrgb&w=600'
     ],
     testimonials: [
         { name: 'Ahmet Yılmaz', text: 'Gittiğim en iyi kuaför. İşinin gerçek ustası. Hem sakal hem saç kesimi mükemmel.', service: 'Düzenli Müşteri', rating: 5 },
