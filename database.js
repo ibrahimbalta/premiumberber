@@ -138,7 +138,7 @@ window.loadDB = async function() {
 };
 
 // Save database
-window.saveDB = async function(dbData) {
+window.cloudSaveDB = async function(dbData) {
     // Write instantly to local storage for local responsive sync
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dbData));
 
